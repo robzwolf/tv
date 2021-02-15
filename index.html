@@ -1,0 +1,62 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <title>Message</title>
+    <meta charset="utf-8">
+    <link href="https://fonts.googleapis.com/css?family=Roboto:900&display=swap" rel="stylesheet">
+    <style type="text/css">
+        h1 {
+            font-family: 'Roboto', Arial, Verdana, sans-serif;
+            font-weight: 900;
+            font-size: 200px;
+            margin: 0;
+            padding: 4vh 4vw;
+            text-align: center;
+            min-height: 200px;
+            min-width: 400px;
+        }
+        .empty {
+            background: #f2f2f2;
+            border-radius: 20px;
+        }
+        body {
+            margin: 0;
+            padding: 0;
+        }
+        main {
+            height: 100vh;
+            width: 100vw;
+            overflow: scroll;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+    </style>
+</head>
+<body>
+    <main>
+        <h1 contenteditable="true"></h1>
+    </main>
+    <script>
+        const regex = /^\s*$/;
+        function updateState(input) {
+            if (!input.textContent || input.textContent.match(regex)) {
+                input.classList.add('empty');
+            } else {
+                input.classList.remove('empty');
+            }
+        }
+
+        window.onload = function() {
+            const input = document.querySelector('h1');
+            input.focus();
+            input.innerHTML = decodeURIComponent(atob(window.location.hash.substring(1)));
+            updateState(input);
+            input.addEventListener('keyup', (e) => {
+                window.location.hash = btoa(input.innerText.substring(0, input.innerText.length + 1));
+                updateState(input);
+            });
+        }
+    </script>
+</body>
+</html>
